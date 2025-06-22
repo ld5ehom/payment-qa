@@ -1,7 +1,7 @@
 # Payment System Test-Driven Development
 
 ##  Project Overview
-- Utilized: Java, Spring Boot, JUnit 5, Mockito, WebMvcTest, DataJpaTest, SpringBootTest, Test Binder, DataRedisTest, Redis, JMeter, k6, Jacoco, SonarQube, GitHub Actions, Docker
+- Utilized: Java, Spring Boot, JUnit 5, SpringBootTest
 
 -----
 ## ## Reference Site
@@ -21,8 +21,9 @@
 ### Task 1: Balance Feature Implementation
 - **Issues** : [task-1-crud](https://github.com/ld5ehom/inventory-qa/tree/task-1-crud)
 - **Details** :
-    - **Project Structure Setup for Service Unit Testing** : [b44de3b](https://github.com/ld5ehom/inventory-qa/commit/b44de3bc604020350cb9dd00f2b48b8967d3fce5)
-       
+    - **Payment System Basic CRUD Implementation** 
+      - Implemented core wallet features using Java, Spring Boot, and JPA, including creation, retrieval, and balance update with business constraints (single wallet per user, non-negative balance, and 100,000 unit limit), ensuring transactional consistency and validating all scenarios through Spock-based unit tests with mocked repositories.
+  
 ### Task 2: Payment Logic & Integration Testing
 - **Issues** : [task-2-payment](https://github.com/ld5ehom/inventory-qa/tree/task-2-payment)
 - **Details** :
