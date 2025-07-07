@@ -26,12 +26,4 @@ public class WalletController {
             @PathVariable("userId") Long userId) {
         return walletService.findWalletByUserId(userId);
     }
-
-    // Adds balance to an existing wallet
-    // 기존 지갑에 잔액을 추가합니다.
-    @PostMapping("/api/wallets/add-balance")
-    public AddBalanceWalletResponse addBalance(
-            @RequestBody AddBalanceWalletRequest addBalanceWalletRequest) {
-        return walletService.addBalance(addBalanceWalletRequest);
-    }
 }
