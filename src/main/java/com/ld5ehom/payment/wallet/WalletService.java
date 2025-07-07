@@ -52,6 +52,18 @@ public class WalletService {
                 .orElse(null);
     }
 
+    public FindWalletResponse findWalletByWalletId(Long walletId) {
+        return walletRepository.findById(walletId)
+                .map(wallet -> new FindWalletResponse(
+                        wallet.getId(),
+                        wallet.getUserId(),
+                        wallet.getBalance(),
+                        wallet.getCreatedAt(),
+                        wallet.getUpdatedAt()
+                ))
+                .orElse(null);
+    }
+
     /// Adds the specified amount to the wallet balance with validation rules:
     /// - Balance must not go below zero.
     /// - Balance must not exceed the limit (100,000).
