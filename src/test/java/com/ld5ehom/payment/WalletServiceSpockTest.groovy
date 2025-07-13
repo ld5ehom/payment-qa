@@ -21,12 +21,12 @@ class WalletServiceSpockTest extends Specification {
         walletService = new WalletService(walletRepository)
     }
 
-    // Test wallet creation when no wallet exists
-    // 지갑이 없는 경우 지갑 생성 테스트
-    def "Creates a wallet if the user does not already have one"() {
+    // Creates a wallet if user does not already have one
+    // 지갑이 없는 경우 지갑을 생성합니다.
+    def "creates wallet when user has none"() {
         given:
         CreateWalletRequest request = new CreateWalletRequest(1L)
-        walletRepository.findWalletByUserId(1L) >> Optional.empty()
+        walletRepository.findTopByUserId(1L) >> Optional.empty()
 
         when:
         def createdWallet = walletService.createWallet(request)
@@ -38,16 +38,15 @@ class WalletServiceSpockTest extends Specification {
         println createdWallet
     }
 
-    // Test error when wallet already exists for user
-    // 사용자가 이미 지갑을 가진 경우 예외 발생 테스트
-    def "Throws an exception if the user already has a wallet"() {
+    // Throws exception if wallet already exists
+    // 지갑이 이미 존재하는 경우 예외를 발생시킵니다.
+    def "throws exception when wallet already exists"() {
         given:
         CreateWalletRequest request = new CreateWalletRequest(1L)
-        walletRepository.findWalletByUserId(1L) >>
-                Optional.of(new Wallet(1L))
+        walletRepository.findTopByUserId(1L) >> Optional.of(new Wallet(1L))
 
         when:
-        def createdWallet = walletService.createWallet(request)
+        walletService.createWallet(request)
 
         then:
         def ex = thrown(RuntimeException)
@@ -55,14 +54,14 @@ class WalletServiceSpockTest extends Specification {
         ex.printStackTrace()
     }
 
-    // Test successful wallet retrieval
-    // 지갑 조회 성공 테스트 (생성된 경우)
-    def "Retrieves a wallet if it exists"() {
+    // Retrieves wallet if it exists
+    // 지갑이 존재할 경우 해당 지갑을 조회합니다.
+    def "retrieves wallet when it exists"() {
         given:
         def userId = 1L
         def wallet = new Wallet(userId)
         wallet.balance = new BigDecimal(1000)
-        walletRepository.findWalletByUserId(userId) >> Optional.of(wallet)
+        walletRepository.findTopByUserId(userId) >> Optional.of(wallet)
 
         when:
         def result = walletService.findWalletByUserId(userId)
@@ -73,22 +72,23 @@ class WalletServiceSpockTest extends Specification {
         println result
     }
 
-    // Test retrieval when wallet does not exist
-    // 지갑이 존재하지 않을 때 조회 결과 테스트
-    def "Returns null if the wallet does not exist"() {
+    // Returns null if wallet does not exist
+    // 지갑이 존재하지 않으면 null을 반환합니다.
+    def "returns null when wallet does not exist"() {
         given:
         def userId = 1L
-        walletRepository.findWalletByUserId(userId) >> Optional.empty()
+        walletRepository.findTopByUserId(userId) >> Optional.empty()
 
         when:
-        def result = walletService.findWalletByUserId(1L)
+        def result = walletService.findWalletByUserId(userId)
+
         then:
         result == null
     }
 
-    // Test successful balance addition
-    // 잔액 충전 성공 테스트
-    def "Updates the balance when wallet exists and sufficient funds"() {
+    // Updates balance when wallet exists and add amount is valid
+    // 지갑이 존재하고 잔액 추가가 유효한 경우 잔액을 업데이트합니다.
+    def "updates balance with valid addition"() {
         given:
         def walletId = 1L
         def initialBalance = new BigDecimal("200.00")
@@ -98,15 +98,15 @@ class WalletServiceSpockTest extends Specification {
         walletRepository.findById(walletId) >> Optional.of(wallet)
 
         when:
-        def result = walletService.addBalance(new AddBalanceWalletRequest(1L, addAmount))
+        def result = walletService.addBalance(new AddBalanceWalletRequest(walletId, addAmount))
 
         then:
         result.balance() == new BigDecimal("300.00")
     }
 
-    // Test exception when wallet does not exist
-    // 지갑이 없을 경우 예외 테스트
-    def "Throws an exception if the wallet does not exist"() {
+    // Throws exception if wallet does not exist
+    // 지갑이 존재하지 않으면 예외를 발생시킵니다.
+    def "throws exception when wallet not found"() {
         given:
         def walletId = 999L
         def addAmount = new BigDecimal("100.00")
@@ -121,9 +121,9 @@ class WalletServiceSpockTest extends Specification {
         ex.printStackTrace()
     }
 
-    // Test exception when resulting balance would be negative
-    // 충전 후 잔액이 마이너스가 될 경우 예외 테스트
-    def "Throws an exception if balance goes below zero"() {
+    // Throws exception if balance goes below zero
+    // 잔액이 음수가 되는 경우 예외를 발생시킵니다.
+    def "throws exception when balance becomes negative"() {
         given:
         def walletId = 1L
         def addAmount = new BigDecimal("-101.00")
@@ -140,9 +140,9 @@ class WalletServiceSpockTest extends Specification {
         ex.printStackTrace()
     }
 
-    // Test exception when balance exceeds the maximum limit
-    // 잔액이 최대 한도를 초과할 경우 예외 테스트
-    def "Throws an exception if balance exceeds the limit"() {
+    // Throws exception if balance exceeds maximum limit
+    // 잔액이 최대 한도를 초과하는 경우 예외를 발생시킵니다.
+    def "throws exception when balance exceeds limit"() {
         given:
         def walletId = 1L
         def addAmount = new BigDecimal(100_000)
