@@ -3,12 +3,13 @@ package com.ld5ehom.payment.wallet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
-@RestController
+
 /*
  * This controller exposes wallet-related HTTP endpoints for creating, retrieving, and updating wallet balance.
  * 이 컨트롤러는 지갑 생성, 조회, 잔액 변경을 위한 HTTP 엔드포인트를 제공합니다.
  */
+@RequiredArgsConstructor
+@RestController
 public class WalletController {
     private final WalletService walletService;
 

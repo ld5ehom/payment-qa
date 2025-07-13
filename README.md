@@ -1,6 +1,9 @@
 # Payment System with Test-Driven Development
 
 ## Project Overview
+- Built wallet and payment features with domain constraints such as idempotency, single wallet per user, and balance limits, using Spring Boot and JPA.
+- Applied test-driven development with Spock and JUnit5, validating business logic through unit/integration tests and simulating failures to ensure data integrity across MySQL and Redis.
+- Implemented PG workflows with request-approval and retry logic, and evaluated scalability through performance testing with JMeter and nGrinder.
 - Utilized: Java, Spring Boot, MySQL, JUnit5, SpringBootTest, Groovy (Spock Framework)
 
 -----
@@ -29,13 +32,25 @@
 ### Task 2: Transaction Domain Logic Implementation & Integration Test
 - **Issues** : [task-2-transaction](https://github.com/ld5ehom/payment-qa/tree/task-2-transaction)
 - **Details** :
-  - **Transaction Logic & Integration Test Implementation**
+  - **Transaction Logic & Integration Test Implementation** -> [902e89e](https://github.com/ld5ehom/payment-qa/commit/902e89ec3f34b741bb8cf72bfeaff4bfe6882289)
     - Implemented core transaction features including charge and payment flows, integrated with wallet balance updates. Added validation for duplicate transactions, and completed both Spock-based unit testing and JUnit-based integration testing for all transaction logic.
 
 ## Milestone 2 : Stability, External Integration & Load Testing
-### Task 3: Repository Validation with DataJpaTest
+### Task 3: Ensure Idempotency & Data Consistency with Unit Tests
+- **Issues** : [task-3-idempotency](https://github.com/ld5ehom/payment-qa/tree/task-3-idempotency)
+- **Details** :
+  - **Ensuring Data Integrity via Idempotency and Concurrency Simulation**
+    - Implemented unit tests to validate wallet logic including balance limits, duplicate creation, and idempotent behavior using in-memory state.
+    - Simulated concurrent wallet creation and charging scenarios through integration tests to verify consistent behavior under race conditions.
 
-### Task 4: Integration Testing with SpringBootTest
+### Task 4: Validate Data Integrity via Integration Tests
+- **Issues** : [task-4-integrity](https://github.com/ld5ehom/payment-qa/tree/task-4-integrity)
+- **Details** :
 
-### Task 5: End-to-End Testing Based on User Scenarios
-
+### Task 5: Implement External Payment Gateway Integration
+- **Issues** : [task-5-pg](https://github.com/ld5ehom/payment-qa/tree/task-5-pg)
+- **Details** :
+- 
+### Task 6: Execute Load & Performance Tests
+- **Issues** : [task-6-performance](https://github.com/ld5ehom/payment-qa/tree/task-6-performance)
+- **Details** :
